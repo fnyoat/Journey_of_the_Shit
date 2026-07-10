@@ -1,0 +1,33 @@
+name: TypeScript 编译验证
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'plugin-dev/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'plugin-dev/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: plugin-dev
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript 编译检查
+        run: npx tsc --noEmit
